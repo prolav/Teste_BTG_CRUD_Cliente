@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Teste_BTG_CRUD_Cliente.Pages.Cards.ClienteCard"
+              xmlns:cards="clr-namespace:Teste_BTG_CRUD_Cliente.Pages.Cards">
+
+    <Border Stroke="DarkBlue" Padding="10" >
+        <Grid RowDefinitions="Auto" ColumnDefinitions="*,*,*,Auto"  VerticalOptions="Center" ColumnSpacing="20">
+            <Grid Grid.Column="0" ColumnDefinitions="Auto,Auto" ColumnSpacing="20">
+                <Label Grid.Column="0" Style="{StaticResource Label16BoldStyle}" 
+                       Text="{Binding Name, StringFormat='Name: {0}'}"/>
+                <Label Grid.Column="1" Text="{Binding Lastname}" Style="{StaticResource Label16BoldStyle}"/>
+            </Grid>
+
+            <Label Grid.Column="1" 
+                Style="{StaticResource Label16BoldStyle}" 
+                Text="{Binding Age, StringFormat='Age: {0}'}"/>
+
+            <Label Grid.Column="2"               
+                Style="{StaticResource Label16BoldStyle}" 
+                Text="{Binding Address, StringFormat='Adress: {0}'}"/>
+
+            <Grid Grid.Column="3" ColumnDefinitions="Auto,Auto" VerticalOptions="Center" ColumnSpacing="20">
+                <Button Grid.Column="0" Style="{StaticResource Button12_DarkBlue}"
+                        Text="🗑 Delete"
+                        Command="{Binding Source={RelativeSource AncestorType={x:Type cards:ClienteCard}}, Path=ExcluirClienteCommand}"
+                        CommandParameter="{Binding .}" />
+                <Button Grid.Column="1" Style="{StaticResource Button12_DarkBlue}" 
+                        Text="✏️ Edit"
+                        Command="{Binding Source={RelativeSource AncestorType={x:Type cards:ClienteCard}}, Path=EditarClienteCommand}"
+                        CommandParameter="{Binding .}" />
+            </Grid>
+        </Grid>
+    </Border>
+</ContentView>
+

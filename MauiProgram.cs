@@ -1,5 +1,10 @@
 ﻿using Microsoft.Extensions.Logging;
-
+using Microsoft.Maui;
+#if WINDOWS
+    using Microsoft.UI;
+    using Microsoft.UI.Windowing;
+    using Microsoft.UI.Xaml;
+#endif
 namespace Teste_BTG_CRUD_Cliente
 {
     public static class MauiProgram

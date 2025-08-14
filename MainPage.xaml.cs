@@ -1,4 +1,6 @@
-﻿namespace Teste_BTG_CRUD_Cliente
+﻿using Teste_BTG_CRUD_Cliente.Pages;
+
+namespace Teste_BTG_CRUD_Cliente
 {
     public partial class MainPage : ContentPage
     {
@@ -16,9 +18,12 @@
             if (count == 1)
                 CounterBtn.Text = $"Clicked {count} time";
             else
-                CounterBtn.Text = $"Clicked {count} times";
+            {
+                var novaJanela = new Microsoft.Maui.Controls.Window(new ClienteWindow());
+                Application.Current.OpenWindow(novaJanela);
+            }
 
-            SemanticScreenReader.Announce(CounterBtn.Text);
+            //SemanticScreenReader.Announce(CounterBtn.Text);
         }
     }
 }

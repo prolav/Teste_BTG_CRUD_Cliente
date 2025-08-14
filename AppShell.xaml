@@ -7,8 +7,8 @@
     Title="Teste_BTG_CRUD_Cliente">
 
     <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
+        Title="Lista Cliente"
+        ContentTemplate="{DataTemplate local:Pages.ListaClientePage}"
+        Route="ListaClientePage" />
 
 </Shell>
