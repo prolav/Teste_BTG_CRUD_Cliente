@@ -1,11 +1,5 @@
-﻿
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
+﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using Teste_BTG_CRUD_Cliente.Data.Models;
 using Teste_BTG_CRUD_Cliente.Services.IServices;
 
@@ -81,12 +75,12 @@ namespace Teste_BTG_CRUD_Cliente.ViewModels
                 OnPropertyChanged();
             }
         }
-
         #endregion
 
         #region Commands
         public Command SalvarClienteCommand => new Command(async () => await SalvarClienteAsync());
         public Command DeletarClienteCommand => new Command(async () => await DeletarClienteAsync());
+        public Command FecharJanelaCommand => new Command(() => FecharJanela());
         #endregion
 
         public ClienteViewModel(IClienteService clienteService)
@@ -113,15 +107,13 @@ namespace Teste_BTG_CRUD_Cliente.ViewModels
             }
         }
 
-
         private async Task SalvarClienteAsync()
         {
             try
             {
                 if (string.IsNullOrEmpty(Name) || string.IsNullOrEmpty(Lastname) || string.IsNullOrEmpty(Address) || Age == 0)
                 {
-                    var errorMessage = "";
-                    throw new Exception("Check the informations");
+                    throw new Exception("Please fill in all fields");
                 }
                 else
                 {
@@ -133,9 +125,9 @@ namespace Teste_BTG_CRUD_Cliente.ViewModels
                     Cliente.Name = Name; 
                     Cliente.Lastname = Lastname;
                     await _clienteService.InsertReplaceCliente(Cliente);
-                }
-                await Application.Current.MainPage.DisplayAlert("Atention", "Recorded customer", "OK");
-                FecharJanela();
+                    await Application.Current.MainPage.DisplayAlert("Atention", "Recorded customer", "OK");
+                    FecharJanela();
+                }               
             }
             catch (Exception e)
             {
@@ -145,13 +137,21 @@ namespace Teste_BTG_CRUD_Cliente.ViewModels
 
         private void FecharJanela()
         {
-            var window = Application.Current.Windows.FirstOrDefault(w => w.Page.BindingContext == this);
-            if (window != null)
+            try
             {
-                Application.Current.CloseWindow(window);
-                MessagingCenter.Send(this, "JanelaFechou");
+                var window = Application.Current.Windows.FirstOrDefault(w => w.Page.BindingContext == this);
+                if (window != null)
+                {
+                    Application.Current.CloseWindow(window);
+                    MessagingCenter.Send(this, "ClientePageClosed");
+                }
             }
+            catch (Exception e)
+            {
+                Application.Current.MainPage.DisplayAlert("Atention", e.Message, "OK");
+            }           
         }
+
 
         private async Task DeletarClienteAsync()
         {
@@ -160,10 +160,7 @@ namespace Teste_BTG_CRUD_Cliente.ViewModels
                 var resposta = await Application.Current.MainPage.DisplayAlert("Atention", $"Are you sure you want to delete the customer \"{Name}\" ?", "OK", "Cancel");
                 if (resposta == true)
                 {
-                    if (Cliente == null)
-                        throw new Exception("something wrong");
-                    else
-                        await _clienteService.DeleteCliente(Cliente);
+                    await _clienteService.DeleteCliente(Cliente);
                     FecharJanela();
                 }
             }
@@ -192,12 +189,19 @@ namespace Teste_BTG_CRUD_Cliente.ViewModels
 
         public void Initialize(ClienteModel cliente, bool modoEdicao, bool modoDelete)
         {
-            ModoEdicao = modoEdicao;
-            ModoDelete = modoDelete;
-            if (cliente != null)
+            try
             {
-                Cliente = cliente;
-                CarregarDados();
+                ModoEdicao = modoEdicao;
+                ModoDelete = modoDelete;
+                if (cliente != null)
+                {
+                    Cliente = cliente;
+                    CarregarDados();
+                }
+            }
+            catch (Exception e)
+            {
+                Application.Current.MainPage.DisplayAlert("Atention", e.Message, "OK");
             }
         }
         #endregion

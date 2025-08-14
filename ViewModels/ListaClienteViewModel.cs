@@ -60,7 +60,7 @@ namespace Teste_BTG_CRUD_Cliente.ViewModels
         #endregion
         public ListaClienteViewModel(IClienteService clienteService) 
         {
-            MessagingCenter.Subscribe<ClienteViewModel>(this, "JanelaFechou", (sender) =>
+            MessagingCenter.Subscribe<ClienteViewModel>(this, "ClientePageClosed", (sender) =>
             {
                 CarregarDados();
             });
@@ -87,7 +87,6 @@ namespace Teste_BTG_CRUD_Cliente.ViewModels
         {
             try
             {
-                //string rota = nameof(ClientePage);
                 var serviceProvider = Application.Current.Handler.MauiContext.Services;
                 if (cliente != null)
                 {

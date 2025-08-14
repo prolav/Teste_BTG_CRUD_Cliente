@@ -6,7 +6,7 @@
              Title="">
     <ScrollView>
         <Grid RowDefinitions="Auto,*" Padding="10" RowSpacing="10">
-            <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="20">
+            <Grid ColumnDefinitions="*,Auto,Auto,Auto" ColumnSpacing="20">
                 <Label Grid.Column="0" 
                     Style="{StaticResource Label24BoldStyle}" 
                     VerticalOptions="Center"
@@ -23,6 +23,11 @@
                     Text="Save Customer"                   
                     Command="{Binding SalvarClienteCommand}"
                     IsVisible="{Binding ModoEdicao}"/>
+                <Button Grid.Column="3" 
+                    CornerRadius="10" 
+                    Style="{StaticResource Button12_DarkBlue}"
+                    Text="Cancel"                   
+                    Command="{Binding FecharJanelaCommand}"/>
             </Grid>
 
             <Grid Grid.Row="1" RowDefinitions="Auto,Auto,Auto,Auto,Auto" RowSpacing="10">
