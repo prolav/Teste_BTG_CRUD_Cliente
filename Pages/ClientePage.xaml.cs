@@ -13,7 +13,6 @@ public partial class ClientePage : ContentPage
     {
         if (sender is Entry entry)
         {
-            // Remove tudo que não for número
             string somenteNumeros = new string(e.NewTextValue?.Where(char.IsDigit).ToArray());
 
             if (entry.Text != somenteNumeros)

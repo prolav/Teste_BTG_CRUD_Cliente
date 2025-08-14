@@ -4,64 +4,65 @@
              x:Class="Teste_BTG_CRUD_Cliente.Pages.ClientePage"
              BackgroundColor="Silver"
              Title="">
+    <ScrollView>
+        <Grid RowDefinitions="Auto,*" Padding="10" RowSpacing="10">
+            <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="20">
+                <Label Grid.Column="0" 
+                    Style="{StaticResource Label24BoldStyle}" 
+                    VerticalOptions="Center"
+                    Text="Customer"/>
+                <Button Grid.Column="1" 
+                    CornerRadius="10" HorizontalOptions="End" 
+                    Style="{StaticResource Button12_DarkBlue}"
+                    Text="Delete Customer"
+                    Command="{Binding DeletarClienteCommand}" 
+                    IsVisible="{Binding ModoDelete}"/>
+                <Button Grid.Column="2" 
+                    CornerRadius="10" 
+                    Style="{StaticResource Button12_DarkBlue}"
+                    Text="Save Customer"                   
+                    Command="{Binding SalvarClienteCommand}"
+                    IsVisible="{Binding ModoEdicao}"/>
+            </Grid>
 
-    <Grid RowDefinitions="Auto,*" Padding="10" RowSpacing="10">
-        <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="20">
-            <Label Grid.Column="0" 
-                Style="{StaticResource Label48BoldStyle}" 
-                VerticalOptions="Center"
-                Text="Customer"/>
-            <Button Grid.Column="1" 
-                CornerRadius="10" HorizontalOptions="End" 
-                Style="{StaticResource Button12_DarkBlue}"
-                Text="Delete Customer"
-                Command="{Binding DeletarClienteCommand}" 
-                IsVisible="{Binding ModoDelete}"/>
-            <Button Grid.Column="2" 
-                CornerRadius="10" 
-                Style="{StaticResource Button12_DarkBlue}"
-                Text="Save Customer"                   
-                Command="{Binding SalvarClienteCommand}"
-                IsVisible="{Binding ModoEdicao}"/>
+            <Grid Grid.Row="1" RowDefinitions="Auto,Auto,Auto,Auto,Auto" RowSpacing="10">
+                <Grid Row="0" ColumnDefinitions="Auto,*" ColumnSpacing="10" >
+                    <Label Grid.Column="0" Style="{StaticResource Label12BoldStyle}"
+                       Text="Name" />
+                    <Border Grid.Column="1" Style="{StaticResource BorderEntry}">
+                        <Entry Placeholder="Name" Style="{StaticResource Entry12Style}"
+                           Text="{Binding Name, Mode=TwoWay}" IsEnabled="{Binding ModoEdicao}"/>
+                    </Border>
+                </Grid>
+
+                <Grid Row="2" ColumnDefinitions="Auto,*" ColumnSpacing="10" >
+                    <Label Grid.Column="0" Style="{StaticResource Label12BoldStyle}"
+                        Text="Last Name" />
+                    <Border Grid.Column="1" Style="{StaticResource BorderEntry}">
+                        <Entry Placeholder="Last Name" Style="{StaticResource Entry12Style}" 
+                            Text="{Binding Lastname, Mode=TwoWay}" IsEnabled="{Binding ModoEdicao}"/>
+                    </Border>
+                </Grid>
+
+                <Grid Row="3" ColumnDefinitions="Auto,*" ColumnSpacing="10" >
+                    <Label Grid.Column="0" Style="{StaticResource Label12BoldStyle}"
+                        Text="Age" />
+                    <Border Grid.Column="1" Style="{StaticResource BorderEntry}">
+                        <Entry Placeholder="Age" Style="{StaticResource Entry12Style}" Keyboard="Numeric"
+                            Text="{Binding Age, Mode=TwoWay}" IsEnabled="{Binding ModoEdicao}"
+                               TextChanged="EntryOnlyNumbers_TextChanged"/>
+                    </Border>
+                </Grid>
+
+                <Grid Row="4" ColumnDefinitions="Auto,*" ColumnSpacing="10" >
+                    <Label Grid.Column="0" Style="{StaticResource Label12BoldStyle}"
+                        Text="Address" />
+                    <Border Grid.Column="1" Style="{StaticResource BorderEntry}">
+                        <Entry Placeholder="Address" Style="{StaticResource Entry12Style}" Keyboard="Numeric"
+                            Text="{Binding Address, Mode=TwoWay}" IsEnabled="{Binding ModoEdicao}"/>
+                    </Border>
+                </Grid>
+            </Grid>
         </Grid>
-
-        <Grid Grid.Row="1" RowDefinitions="Auto,Auto,Auto,Auto,Auto" RowSpacing="10">
-            <Grid Row="0" ColumnDefinitions="Auto,*" ColumnSpacing="10" >
-                <Label Grid.Column="0" Style="{StaticResource Label24BoldStyle}"
-                   Text="Name" />
-                <Border Grid.Column="1" Style="{StaticResource BorderEntry}">
-                    <Entry Placeholder="Name" Style="{StaticResource Entry24Style}"
-                       Text="{Binding Name, Mode=TwoWay}" IsEnabled="{Binding ModoEdicao}"/>
-                </Border>
-            </Grid>
-
-            <Grid Row="2" ColumnDefinitions="Auto,*" ColumnSpacing="10" >
-                <Label Grid.Column="0" Style="{StaticResource Label24BoldStyle}"
-                    Text="Last Name" />
-                <Border Grid.Column="1" Style="{StaticResource BorderEntry}">
-                    <Entry Placeholder="Last Name" Style="{StaticResource Entry24Style}" 
-                        Text="{Binding Lastname, Mode=TwoWay}" IsEnabled="{Binding ModoEdicao}"/>
-                </Border>
-            </Grid>
-
-            <Grid Row="3" ColumnDefinitions="Auto,*" ColumnSpacing="10" >
-                <Label Grid.Column="0" Style="{StaticResource Label24BoldStyle}"
-                    Text="Age" />
-                <Border Grid.Column="1" Style="{StaticResource BorderEntry}">
-                    <Entry Placeholder="Age" Style="{StaticResource Entry24Style}" Keyboard="Numeric"
-                        Text="{Binding Age, Mode=TwoWay}" IsEnabled="{Binding ModoEdicao}"
-                           TextChanged="EntryOnlyNumbers_TextChanged"/>
-                </Border>
-            </Grid>
-
-            <Grid Row="4" ColumnDefinitions="Auto,*" ColumnSpacing="10" >
-                <Label Grid.Column="0" Style="{StaticResource Label24BoldStyle}"
-                    Text="Address" />
-                <Border Grid.Column="1" Style="{StaticResource BorderEntry}">
-                    <Entry Placeholder="Address" Style="{StaticResource Entry24Style}" Keyboard="Numeric"
-                        Text="{Binding Address, Mode=TwoWay}" IsEnabled="{Binding ModoEdicao}"/>
-                </Border>
-            </Grid>
-        </Grid>
-    </Grid>
+    </ScrollView>
 </ContentPage>

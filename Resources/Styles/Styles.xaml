@@ -448,15 +448,15 @@
         <Setter Property="SelectedTabColor" Value="{AppThemeBinding Light={StaticResource Gray950}, Dark={StaticResource Gray200}}" />
     </Style>
 
-    <Style x:Key="Label16Style" TargetType="Label">
+    <Style x:Key="Label12Style" TargetType="Label">
         <Setter Property="TextColor" Value="DarkBlue"/>
-        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="FontSize" Value="Default"/>
         <Setter Property="VerticalOptions" Value="Center"/>
     </Style>
 
-    <Style x:Key="Label16BoldStyle" TargetType="Label">
+    <Style x:Key="Label12BoldStyle" TargetType="Label">
         <Setter Property="TextColor" Value="DarkBlue"/>
-        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="FontSize" Value="Default"/>
         <Setter Property="FontAttributes" Value="Bold"/>
         <Setter Property="VerticalOptions" Value="Center"/>
     </Style>
@@ -479,12 +479,12 @@
         <Setter Property="BackgroundColor" Value="DarkBlue"/>
         <Setter Property="TextColor" Value="Silver"/>
         <Setter Property="CornerRadius" Value="10"/>
-        <Setter Property="FontSize" Value="24"/>
+        <Setter Property="FontSize" Value="Default"/>
         <Setter Property="FontAttributes" Value="Bold"/>
     </Style>
 
-    <Style x:Key="Entry24Style" TargetType="Entry">
-        <Setter Property="FontSize" Value="24"/>
+    <Style x:Key="Entry12Style" TargetType="Entry">
+        <Setter Property="FontSize" Value="Default"/>
         <Setter Property="BackgroundColor" Value="Transparent"/>
         <Setter Property="TextColor" Value="DarkBlue"/>
         <Setter Property="VerticalOptions" Value="Center"/>
@@ -495,7 +495,7 @@
         <Setter Property="Stroke" Value="DarkBlue"/>
         <Setter Property="StrokeThickness" Value="2"/>
         <Setter Property="StrokeShape" Value="RoundRectangle 3"/>
-        <Setter Property="Padding" Value="10"/>
+        <Setter Property="Padding" Value="5"/>
         <Setter Property="HorizontalOptions" Value="Fill"/>
     </Style>
 

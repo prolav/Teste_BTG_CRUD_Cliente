@@ -51,9 +51,16 @@ namespace Teste_BTG_CRUD_Cliente
         private static void AddViewModel<TViewModel, TView>(this IServiceCollection services)
             where TView : ContentPage, new()
             where TViewModel : class
-        {
+                {
             services.AddTransient<TViewModel>();
-            services.AddTransient<TView>(s => new TView() { BindingContext = s.GetRequiredService<TViewModel>() });
+            services.AddTransient<TView>(s =>
+            {
+                var view = new TView(); // construtor padrão
+                var vm = s.GetRequiredService<TViewModel>();
+                view.BindingContext = vm; // setar após criar a página
+                return view;
+            });
         }
+
     }
 }

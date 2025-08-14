@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -108,7 +109,7 @@ namespace Teste_BTG_CRUD_Cliente.ViewModels
             }
             catch (Exception e)
             {
-                await Application.Current.MainPage.DisplayAlert("Erro", e.Message, "OK");
+                await Application.Current.MainPage.DisplayAlert("Atention", e.Message, "OK");
             }
         }
 
@@ -124,17 +125,31 @@ namespace Teste_BTG_CRUD_Cliente.ViewModels
                 }
                 else
                 {
-                    Cliente = new ClienteModel();
+                    if (Cliente == null)
+                        Cliente = new ClienteModel();
+
                     Cliente.Age = Age;
                     Cliente.Address = Address;
                     Cliente.Name = Name; 
                     Cliente.Lastname = Lastname;
-                    await _clienteService.InsertOrReplaceCliente(Cliente);
+                    await _clienteService.InsertReplaceCliente(Cliente);
                 }
+                await Application.Current.MainPage.DisplayAlert("Atention", "Recorded customer", "OK");
+                FecharJanela();
             }
             catch (Exception e)
             {
-                await Application.Current.MainPage.DisplayAlert("Erro", e.Message, "OK");
+                await Application.Current.MainPage.DisplayAlert("Atention", e.Message, "OK");
+            }
+        }
+
+        private void FecharJanela()
+        {
+            var window = Application.Current.Windows.FirstOrDefault(w => w.Page.BindingContext == this);
+            if (window != null)
+            {
+                Application.Current.CloseWindow(window);
+                MessagingCenter.Send(this, "JanelaFechou");
             }
         }
 
@@ -142,18 +157,19 @@ namespace Teste_BTG_CRUD_Cliente.ViewModels
         {
             try
             {
-                var resposta = await Application.Current.MainPage.DisplayAlert("Atenção", $"Deseja realmente excluir o cliente \"{Name}\" ?", "OK", "Cancelar");
+                var resposta = await Application.Current.MainPage.DisplayAlert("Atention", $"Are you sure you want to delete the customer \"{Name}\" ?", "OK", "Cancel");
                 if (resposta == true)
                 {
                     if (Cliente == null)
                         throw new Exception("something wrong");
                     else
                         await _clienteService.DeleteCliente(Cliente);
+                    FecharJanela();
                 }
             }
             catch (Exception e)
             {
-                await Application.Current.MainPage.DisplayAlert("Erro", e.Message, "OK");
+                await Application.Current.MainPage.DisplayAlert("Atention", e.Message, "OK");
             }
         }
 
@@ -169,9 +185,19 @@ namespace Teste_BTG_CRUD_Cliente.ViewModels
             }
             else
             {
-                Cliente = new ClienteModel();
                 ModoEdicao = true;  
                 ModoDelete = false;
+            }
+        }
+
+        public void Initialize(ClienteModel cliente, bool modoEdicao, bool modoDelete)
+        {
+            ModoEdicao = modoEdicao;
+            ModoDelete = modoDelete;
+            if (cliente != null)
+            {
+                Cliente = cliente;
+                CarregarDados();
             }
         }
         #endregion

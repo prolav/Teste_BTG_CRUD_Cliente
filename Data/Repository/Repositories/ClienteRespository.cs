@@ -22,17 +22,5 @@ namespace Teste_BTG_CRUD_Cliente.Data.Repository.Repositories
                 throw e;
             }
         }
-        //public ClienteModel GetById(Guid id)
-        //{
-        //    try
-        //    {
-        //        return GetById(id);
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        throw e;
-        //    }
-        //}
-
     }
 }

@@ -8,7 +8,6 @@ namespace Teste_BTG_CRUD_Cliente
         {
             InitializeComponent();
             Routing.RegisterRoute("listaClientePage", typeof(ListaClientePage));
-            //Routing.RegisterRoute("listaClientePage/clientePage", typeof(ClientePage));
             Routing.RegisterRoute(nameof(ClientePage), typeof(ClientePage));
         }
     }

@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
+﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using Teste_BTG_CRUD_Cliente.Data.Models;
+using Teste_BTG_CRUD_Cliente.Helpers;
 using Teste_BTG_CRUD_Cliente.Pages;
 using Teste_BTG_CRUD_Cliente.Services.IServices;
+
 
 namespace Teste_BTG_CRUD_Cliente.ViewModels
 {
@@ -33,7 +30,7 @@ namespace Teste_BTG_CRUD_Cliente.ViewModels
                     OnPropertyChanged();
 
                     if (_clienteSelecionado != null)
-                        AbrirTelaClienteAsync(_clienteSelecionado, true, false);
+                        AbrirTelaClienteAsync(_clienteSelecionado, true, true);
                 }
             }
         }
@@ -63,6 +60,10 @@ namespace Teste_BTG_CRUD_Cliente.ViewModels
         #endregion
         public ListaClienteViewModel(IClienteService clienteService) 
         {
+            MessagingCenter.Subscribe<ClienteViewModel>(this, "JanelaFechou", (sender) =>
+            {
+                CarregarDados();
+            });
             _clienteService = clienteService;
             CarregarDados();
         }
@@ -79,35 +80,38 @@ namespace Teste_BTG_CRUD_Cliente.ViewModels
                 await Task.Delay(1000);            }
             catch (Exception e)
             {
-                await Application.Current.MainPage.DisplayAlert("Erro", e.Message, "OK");
+                await Application.Current.MainPage.DisplayAlert("Atention", e.Message, "OK");
             }          
         }
         private async Task AbrirTelaClienteAsync(ClienteModel cliente, bool modoEdicao, bool modoDelete)
         {
             try
             {
-                string rota = nameof(ClientePage);
-
+                //string rota = nameof(ClientePage);
+                var serviceProvider = Application.Current.Handler.MauiContext.Services;
                 if (cliente != null)
                 {
-                    await Shell.Current.GoToAsync($"{rota}?id={cliente.Id}&modoEdicao={modoEdicao}&modoDelete={modoDelete}");
+                    WindowNavigationHelper.AbrirClienteEmNovaJanela(serviceProvider, cliente, modoEdicao, modoDelete);
                 }
                 else
                 {
-                    await Shell.Current.GoToAsync(rota); 
+                    WindowNavigationHelper.AbrirClienteEmNovaJanela(serviceProvider, cliente, modoEdicao, modoDelete); 
                 }
             }
             catch (Exception e)
             {
-                await Application.Current.MainPage.DisplayAlert("Erro", e.Message, "OK");
+                await Application.Current.MainPage.DisplayAlert("Atention", e.Message, "OK");
             }
-        }      
+        } 
+        
+       
         #endregion
 
         #region Events
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string name = null) =>
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+
         #endregion
     }
 }

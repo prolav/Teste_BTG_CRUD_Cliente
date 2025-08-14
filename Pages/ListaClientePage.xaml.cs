@@ -9,14 +9,4 @@ public partial class ListaClientePage : ContentPage
 	{
 		InitializeComponent();
     }
-
-    protected override void OnAppearing()
-    {
-        base.OnAppearing();
-
-        if (BindingContext is ListaClienteViewModel vm)
-        {
-            vm.CarregarDados();
-        }
-    }
 }

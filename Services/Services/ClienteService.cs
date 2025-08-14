@@ -54,14 +54,10 @@ namespace Teste_BTG_CRUD_Cliente.Services.Services
             }
         }
 
-        public async Task InsertOrReplaceCliente(ClienteModel cliente)
+        public async Task InsertReplaceCliente(ClienteModel cliente)
         {
             try
             {
-                if (cliente.Id == Guid.Empty)
-                {
-                    cliente.Id = Guid.NewGuid();
-                }
                 _repository.InsertOrReplace(cliente);
             }
             catch (Exception e)
@@ -69,5 +65,7 @@ namespace Teste_BTG_CRUD_Cliente.Services.Services
                 throw new Exception("Erro ao inserir ou substituir cliente: " + e.Message);
             }
         }
+
+
     }
 }

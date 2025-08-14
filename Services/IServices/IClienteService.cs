@@ -13,6 +13,6 @@ namespace Teste_BTG_CRUD_Cliente.Services.IServices
         Task<List<ClienteModel>> ObterClienteOrderByAscAsync();
         ClienteModel ObterClientePorId(Guid id);
         Task DeleteCliente(ClienteModel cliente);
-        Task InsertOrReplaceCliente(ClienteModel cliente);
+        Task InsertReplaceCliente(ClienteModel cliente);
     }
 }
