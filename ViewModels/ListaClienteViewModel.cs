@@ -6,6 +6,8 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using Teste_BTG_CRUD_Cliente.Data.Models;
+using Teste_BTG_CRUD_Cliente.Pages;
+using Teste_BTG_CRUD_Cliente.Services.IServices;
 
 namespace Teste_BTG_CRUD_Cliente.ViewModels
 {
@@ -13,12 +15,28 @@ namespace Teste_BTG_CRUD_Cliente.ViewModels
     {
         #region Fields
         private bool _isEmpty;
+        private readonly IClienteService _clienteService;
+        private ClienteModel _clienteSelecionado;
+
         #endregion
 
         #region Properties
         public List<ClienteModel> ListaClientes { get; set; } = new List<ClienteModel>();
-        public ClienteModel ClienteSelecionado { get; set; }
-        public bool IsRefreshing { get; set; } = false;
+        public ClienteModel ClienteSelecionado
+        {
+            get => _clienteSelecionado;
+            set
+            {
+                if (_clienteSelecionado != value)
+                {
+                    _clienteSelecionado = value;
+                    OnPropertyChanged();
+
+                    if (_clienteSelecionado != null)
+                        AbrirTelaClienteAsync(_clienteSelecionado, true, false);
+                }
+            }
+        }
         public bool IsEmpty
         {
             get => _isEmpty;
@@ -37,91 +55,53 @@ namespace Teste_BTG_CRUD_Cliente.ViewModels
         #endregion
 
         #region Commands
-        public Command RefreshCommand => new Command(async () => await RefreshClientesAsync());
-        public Command AdicionarClienteCommand => new Command(async () => await AdicionarClienteAsync());
-        public Command EditarClienteCommand => new Command<ClienteModel>(async (cliente) => await EditarClienteAsync(cliente));
-        public Command ExcluirClienteCommand => new Command<ClienteModel>(async (cliente) => await ExcluirClienteAsync(cliente));
+        public Command RefreshCommand => new Command(async () => await CarregarDados());
+        public Command AdicionarClienteCommand => new Command(async () => await AbrirTelaClienteAsync(null, true, false));
+        public Command EditarClienteCommand => new Command<ClienteModel>(async (cliente) => await AbrirTelaClienteAsync(cliente,true,false));
+        public Command ExcluirClienteCommand => new Command<ClienteModel>(async (cliente) => await AbrirTelaClienteAsync(cliente,false,true));
         
         #endregion
-        public ListaClienteViewModel() 
+        public ListaClienteViewModel(IClienteService clienteService) 
         {
-            CarregarDadosIniciais();
+            _clienteService = clienteService;
+            CarregarDados();
         }
         #region Methods
-        private void CarregarDadosIniciais()
+        public async Task CarregarDados()
         {
             try
             {
-                // Aqui você pode carregar dados iniciais ou configurar o ViewModel
-                // Por exemplo, adicionar alguns clientes de exemplo
-                ListaClientes.Add(new ClienteModel {Name = "Customer1",Lastname = "LastName", Age = 11, Address = "Casa" });
-                OnPropertyChanged(nameof(ListaClientes));
+                ListaClientes = new List<ClienteModel>();
+                ClienteSelecionado = null;
+                ListaClientes = await _clienteService.ObterClienteOrderByAscAsync();
                 IsEmpty = !ListaClientes.Any();
-            }
-            catch (Exception)
+                OnPropertyChanged(nameof(ListaClientes));
+                await Task.Delay(1000);            }
+            catch (Exception e)
             {
-
-                throw;
-            }
-        }
-
-        private async Task RefreshClientesAsync()
-        {
-            try
-            {
-                IsRefreshing = true;
-                // Simula uma chamada assíncrona para buscar os clientes
-                await Task.Delay(1000);
-                // Aqui você deve implementar a lógica para buscar os clientes do seu serviço ou banco de dados
-                IsRefreshing = false;
-            }
-            catch (Exception)
-            {
-                throw;
+                await Application.Current.MainPage.DisplayAlert("Erro", e.Message, "OK");
             }          
         }
-        private async Task AdicionarClienteAsync()
+        private async Task AbrirTelaClienteAsync(ClienteModel cliente, bool modoEdicao, bool modoDelete)
         {
             try
             {
-                // Lógica para adicionar um novo cliente
-                await Task.Delay(500); // Simula uma operação assíncrona
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
+                string rota = nameof(ClientePage);
 
-        private async Task EditarClienteAsync(ClienteModel cliente)
-        {
-            try
-            {
-                if (cliente == null) return;
-                // Lógica para editar o cliente selecionado
-                await Task.Delay(500); // Simula uma operação assíncrona
-
+                if (cliente != null)
+                {
+                    await Shell.Current.GoToAsync($"{rota}?id={cliente.Id}&modoEdicao={modoEdicao}&modoDelete={modoDelete}");
+                }
+                else
+                {
+                    await Shell.Current.GoToAsync(rota); 
+                }
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                throw;
-            }     
-        }
-        private async Task ExcluirClienteAsync(ClienteModel cliente)
-        {
-            try
-            {
-                if (cliente == null) return;
-                // Lógica para excluir o cliente selecionado
-                await Task.Delay(500); // Simula uma operação assíncrona
-                ListaClientes.Remove(cliente);
+                await Application.Current.MainPage.DisplayAlert("Erro", e.Message, "OK");
             }
-            catch (Exception)
-            {
-
-                throw;
-            }
-        }
+        }      
         #endregion
 
         #region Events
@@ -129,14 +109,5 @@ namespace Teste_BTG_CRUD_Cliente.ViewModels
         protected void OnPropertyChanged([CallerMemberName] string name = null) =>
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         #endregion
-
-        //#region INotifyPropertyChanged Implementation  
-        //public void SetProperty<T>(ref T field, T value, [CallerMemberName] string propertyName = null)
-        //{
-        //    if (EqualityComparer<T>.Default.Equals(field, value)) return;
-        //    field = value;
-        //    OnPropertyChanged(propertyName);
-        //}
-        //#endregion
     }
 }

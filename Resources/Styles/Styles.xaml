@@ -488,6 +488,7 @@
         <Setter Property="BackgroundColor" Value="Transparent"/>
         <Setter Property="TextColor" Value="DarkBlue"/>
         <Setter Property="VerticalOptions" Value="Center"/>
+        <Setter Property="PlaceholderColor" Value="LightBlue"/>
     </Style>
 
     <Style x:Key="BorderEntry" TargetType="Border">

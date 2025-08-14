@@ -6,9 +6,10 @@
 
     <Border Stroke="DarkBlue" Padding="10" >
         <Grid RowDefinitions="Auto" ColumnDefinitions="*,*,*,Auto"  VerticalOptions="Center" ColumnSpacing="20">
-            <Grid Grid.Column="0" ColumnDefinitions="Auto,Auto" ColumnSpacing="20">
+            <Grid Grid.Column="0" ColumnDefinitions="Auto,Auto" ColumnSpacing="5">
                 <Label Grid.Column="0" Style="{StaticResource Label16BoldStyle}" 
-                       Text="{Binding Name, StringFormat='Name: {0}'}"/>
+                    Text="{Binding Name, StringFormat='Name: {0}'}"/>
+                    
                 <Label Grid.Column="1" Text="{Binding Lastname}" Style="{StaticResource Label16BoldStyle}"/>
             </Grid>
 
@@ -22,11 +23,11 @@
 
             <Grid Grid.Column="3" ColumnDefinitions="Auto,Auto" VerticalOptions="Center" ColumnSpacing="20">
                 <Button Grid.Column="0" Style="{StaticResource Button12_DarkBlue}"
-                        Text="🗑 Delete"
+                        Text="Delete"
                         Command="{Binding Source={RelativeSource AncestorType={x:Type cards:ClienteCard}}, Path=ExcluirClienteCommand}"
                         CommandParameter="{Binding .}" />
                 <Button Grid.Column="1" Style="{StaticResource Button12_DarkBlue}" 
-                        Text="✏️ Edit"
+                        Text="Edit"
                         Command="{Binding Source={RelativeSource AncestorType={x:Type cards:ClienteCard}}, Path=EditarClienteCommand}"
                         CommandParameter="{Binding .}" />
             </Grid>

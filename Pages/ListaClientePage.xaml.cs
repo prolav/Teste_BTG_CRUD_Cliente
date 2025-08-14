@@ -8,6 +8,15 @@ public partial class ListaClientePage : ContentPage
 	public ListaClientePage()
 	{
 		InitializeComponent();
-        BindingContext = new ListaClienteViewModel();
+    }
+
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+
+        if (BindingContext is ListaClienteViewModel vm)
+        {
+            vm.CarregarDados();
+        }
     }
 }

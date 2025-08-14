@@ -13,7 +13,7 @@ namespace Teste_BTG_CRUD_Cliente.Data.Models
         public string Lastname { get; set; }
 
         [Column("Age")]
-        public int? Age { get; set; }
+        public int Age { get; set; } = 0;
 
         [Column("Address")]
         public string Address { get; set; }

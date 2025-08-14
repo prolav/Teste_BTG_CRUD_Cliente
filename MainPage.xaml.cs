@@ -19,7 +19,9 @@ namespace Teste_BTG_CRUD_Cliente
                 CounterBtn.Text = $"Clicked {count} time";
             else
             {
-                var novaJanela = new Microsoft.Maui.Controls.Window(new ClienteWindow());
+                var novaJanela = new Microsoft.Maui.Controls.Window(new ClientePage());
+                novaJanela.MaximumWidth = double.MaxValue;
+                novaJanela.MaximumHeight = double.MaxValue;
                 Application.Current.OpenWindow(novaJanela);
             }
 
