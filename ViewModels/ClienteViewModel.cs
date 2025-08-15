@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Teste_BTG_CRUD_Cliente.Data.Models;
+using Teste_BTG_CRUD_Cliente.Helpers;
 using Teste_BTG_CRUD_Cliente.Services.IServices;
 
 namespace Teste_BTG_CRUD_Cliente.ViewModels
@@ -17,12 +18,12 @@ namespace Teste_BTG_CRUD_Cliente.ViewModels
         private string _address;
         private readonly IClienteService _clienteService;
         #endregion
-        
+
         #region Properties
         public ClienteModel Cliente { get => _cliente; set => SetProperty(ref _cliente, value); }
         public string Name
         {
-            get => _name; 
+            get => _name;
             set
             {
                 _name = value;
@@ -58,9 +59,10 @@ namespace Teste_BTG_CRUD_Cliente.ViewModels
             }
         }
 
-        public bool ModoDelete 
-        { get => _modoDelete;
-            set 
+        public bool ModoDelete
+        {
+            get => _modoDelete;
+            set
             {
                 _modoDelete = value;
                 OnPropertyChanged();
@@ -80,7 +82,7 @@ namespace Teste_BTG_CRUD_Cliente.ViewModels
         #region Commands
         public Command SalvarClienteCommand => new Command(async () => await SalvarClienteAsync());
         public Command DeletarClienteCommand => new Command(async () => await DeletarClienteAsync());
-        public Command FecharJanelaCommand => new Command(() => FecharJanela());
+        public Command FecharJanelaCommand => new Command(async() => await FecharJanela());
         #endregion
 
         public ClienteViewModel(IClienteService clienteService)
@@ -103,7 +105,7 @@ namespace Teste_BTG_CRUD_Cliente.ViewModels
             }
             catch (Exception e)
             {
-                await Application.Current.MainPage.DisplayAlert("Atention", e.Message, "OK");
+                await WindowNavigationHelper.ShowAlertAsync("Atention", e.Message, "OK");
             }
         }
 
@@ -113,7 +115,7 @@ namespace Teste_BTG_CRUD_Cliente.ViewModels
             {
                 if (string.IsNullOrEmpty(Name) || string.IsNullOrEmpty(Lastname) || string.IsNullOrEmpty(Address) || Age == 0)
                 {
-                    throw new Exception("Please fill in all fields");
+                    await WindowNavigationHelper.ShowAlertAsync("Atention", "Please fill in all fields", "OK");
                 }
                 else
                 {
@@ -122,20 +124,20 @@ namespace Teste_BTG_CRUD_Cliente.ViewModels
 
                     Cliente.Age = Age;
                     Cliente.Address = Address;
-                    Cliente.Name = Name; 
+                    Cliente.Name = Name;
                     Cliente.Lastname = Lastname;
                     await _clienteService.InsertReplaceCliente(Cliente);
-                    await Application.Current.MainPage.DisplayAlert("Atention", "Recorded customer", "OK");
-                    FecharJanela();
-                }               
+                    await WindowNavigationHelper.ShowAlertAsync("Atention", "Recorded customer", "OK");
+                    await FecharJanela();
+                }
             }
             catch (Exception e)
             {
-                await Application.Current.MainPage.DisplayAlert("Atention", e.Message, "OK");
+                await WindowNavigationHelper.ShowAlertAsync("Atention", e.Message, "OK");
             }
         }
 
-        private void FecharJanela()
+        private async Task FecharJanela()
         {
             try
             {
@@ -148,8 +150,8 @@ namespace Teste_BTG_CRUD_Cliente.ViewModels
             }
             catch (Exception e)
             {
-                Application.Current.MainPage.DisplayAlert("Atention", e.Message, "OK");
-            }           
+                await WindowNavigationHelper.ShowAlertAsync("Atention", e.Message, "OK");
+            }
         }
 
 
@@ -157,16 +159,16 @@ namespace Teste_BTG_CRUD_Cliente.ViewModels
         {
             try
             {
-                var resposta = await Application.Current.MainPage.DisplayAlert("Atention", $"Are you sure you want to delete the customer \"{Name}\" ?", "OK", "Cancel");
+                var resposta = await WindowNavigationHelper.ShowAlertAsync("Atention", $"Are you sure you want to delete the customer \"{Name}\" ?", "OK", "Cancel");
                 if (resposta == true)
                 {
                     await _clienteService.DeleteCliente(Cliente);
-                    FecharJanela();
+                    await FecharJanela();
                 }
             }
             catch (Exception e)
             {
-                await Application.Current.MainPage.DisplayAlert("Atention", e.Message, "OK");
+                await WindowNavigationHelper.ShowAlertAsync("Atention", e.Message, "OK");
             }
         }
 
@@ -182,12 +184,12 @@ namespace Teste_BTG_CRUD_Cliente.ViewModels
             }
             else
             {
-                ModoEdicao = true;  
+                ModoEdicao = true;
                 ModoDelete = false;
             }
         }
 
-        public void Initialize(ClienteModel cliente, bool modoEdicao, bool modoDelete)
+        public async Task Initialize(ClienteModel cliente, bool modoEdicao, bool modoDelete)
         {
             try
             {
@@ -196,12 +198,12 @@ namespace Teste_BTG_CRUD_Cliente.ViewModels
                 if (cliente != null)
                 {
                     Cliente = cliente;
-                    CarregarDados();
+                    await CarregarDados();
                 }
             }
             catch (Exception e)
             {
-                Application.Current.MainPage.DisplayAlert("Atention", e.Message, "OK");
+                await WindowNavigationHelper.ShowAlertAsync("Atention", e.Message, "OK");
             }
         }
         #endregion
@@ -209,7 +211,8 @@ namespace Teste_BTG_CRUD_Cliente.ViewModels
         #region Events
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string name = null) =>
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));      
         #endregion
     }
 }
+

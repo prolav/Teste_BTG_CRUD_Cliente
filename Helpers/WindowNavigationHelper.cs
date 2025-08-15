@@ -50,5 +50,46 @@ namespace Teste_BTG_CRUD_Cliente.Helpers
 
             Application.Current.OpenWindow(window);
         }
+
+        public static async Task<bool> ShowAlertAsync(string title, string message, string accept, string cancel = null)
+        {
+            bool result;
+
+            if (string.IsNullOrEmpty(cancel))
+            {
+                await Application.Current.MainPage.DisplayAlert(title, message, accept);
+                result = true; // Só OK
+            }
+            else
+            {
+                result = await Application.Current.MainPage.DisplayAlert(title, message, accept, cancel);
+            }
+
+#if WINDOWS
+        // Pega a janela que contém a MainPage
+        var window = Application.Current.Windows.LastOrDefault();
+        if (window != null)
+        {
+            // Pega o HWND da janela
+            var hwnd = WinRT.Interop.WindowNative.GetWindowHandle(window.Handler.PlatformView as Microsoft.UI.Xaml.Window);
+
+            // Restaura e traz para frente
+            ShowWindow(hwnd, SW_RESTORE);
+            SetForegroundWindow(hwnd);
+        }
+#endif
+
+            return result;
+        }
+
+#if WINDOWS
+    [DllImport("user32.dll")]
+    private static extern bool SetForegroundWindow(IntPtr hWnd);
+
+    [DllImport("user32.dll")]
+    private static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+
+    private const int SW_RESTORE = 9;
+#endif
     }
 }

@@ -2,7 +2,6 @@
 using System.Runtime.CompilerServices;
 using Teste_BTG_CRUD_Cliente.Data.Models;
 using Teste_BTG_CRUD_Cliente.Helpers;
-using Teste_BTG_CRUD_Cliente.Pages;
 using Teste_BTG_CRUD_Cliente.Services.IServices;
 
 
@@ -30,7 +29,10 @@ namespace Teste_BTG_CRUD_Cliente.ViewModels
                     OnPropertyChanged();
 
                     if (_clienteSelecionado != null)
+                    {
                         AbrirTelaClienteAsync(_clienteSelecionado, true, true);
+                        ClienteSelecionado = null;
+                    }
                 }
             }
         }
@@ -80,7 +82,7 @@ namespace Teste_BTG_CRUD_Cliente.ViewModels
                 await Task.Delay(1000);            }
             catch (Exception e)
             {
-                await Application.Current.MainPage.DisplayAlert("Atention", e.Message, "OK");
+                await WindowNavigationHelper.ShowAlertAsync("Atention", e.Message, "OK");
             }          
         }
         private async Task AbrirTelaClienteAsync(ClienteModel cliente, bool modoEdicao, bool modoDelete)
@@ -88,18 +90,11 @@ namespace Teste_BTG_CRUD_Cliente.ViewModels
             try
             {
                 var serviceProvider = Application.Current.Handler.MauiContext.Services;
-                if (cliente != null)
-                {
-                    WindowNavigationHelper.AbrirClienteEmNovaJanela(serviceProvider, cliente, modoEdicao, modoDelete);
-                }
-                else
-                {
-                    WindowNavigationHelper.AbrirClienteEmNovaJanela(serviceProvider, cliente, modoEdicao, modoDelete); 
-                }
+                WindowNavigationHelper.AbrirClienteEmNovaJanela(serviceProvider, cliente, modoEdicao, modoDelete);
             }
             catch (Exception e)
             {
-                await Application.Current.MainPage.DisplayAlert("Atention", e.Message, "OK");
+                await WindowNavigationHelper.ShowAlertAsync("Atention", e.Message, "OK");
             }
         } 
         
